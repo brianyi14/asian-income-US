@@ -5,26 +5,26 @@ Brian Yi
 Introduction
 ============
 
-In this project, we will mainly focus on data munging and exploratory data analysis.
+**Purpose:** My goal is to practice and develop my data cleaning, transforming, and exploratory data analysis skills in R. We want to identify overall trends and patterns within our dataset to see what is responsible for the higher median income for Asian Americans in the US. Under the assumption that the factors responsible for the higher income isn't related to race, this knowledge can be useful for anyone who wants to improve their chances of earning a higher income. From an industry view, if a company measures an individual's potential according to their predicted income, they can even use the patterns we discover as metrics to hiring the right employees!
 
-The dataset we will be looking at today is the Adult dataset that was extracted from the 1994 US Census Bureau database. This dataset contains various social, economic, and ethnic variables that can be used to predict whether someone had an annual salary of more or less than 50K. The dataset can be found here: [Dataset Link](https://archive.ics.uci.edu/ml/datasets/Adult).
+Due to my own Asian ethnic background, I am interested in the factors most responsible for Asian Americans supposedly having a higher median income in the US. I choose the Adult dataset that was extracted from the 1994 US Census Bureau database. This dataset contains various social, economic, educational, and ethnic variables that can be used to predict someone's salary.
 
-Due to my own Asian ethnic background, I wanted to determine the factors most responsible for Asian Americans supposedly having a higher income in comparison to that of the other races. Throughout this report, we will focus on the following variables as predictors for salary: `education_level`, `working_class`, `occupation`, `marital_status`, and `hours_per_week`. Keep note that aside from `hours_per_week` being numerical, the other four variables we will be investigating are categorical.
+**Method of Approach:** Throughout this report, we focus on the following predictors for `salary`: `education_level`, `working_class`, `occupation`, `marital_status`, and `hours_per_week`. We look at each predictor individually, and our analysis of each variable follows a general two step procedure. First, we see if there is a correlation between the predictor and `salary` of the entire US population. *(For example: If our predictor is `education_level`, we determine if there is a correlation between higher education and higher income for the population as a whole.)* Next, we determine if Asians occupy the respective fields of the predictor that correlate to higher salary. *(Following the same example: If higher education corresponds to higher income, we determine whether Asians have a higher average eductation. If Asians indeed have a higher eductation than average, since higher education correlates with higher income, then we know that `education_level` is a variable responsible for the higher median income among Asians.)*
 
-We will look at each variable individually, and our analysis of each variable will follow a general two step procedure (some will be combined into one step). We will first see if there is a correlation between the variable we are investigating and the salary of the entire US population sample. Next, we will determine if Asians occupy the respective fields of that variable that correlate to higher salary. Now let's get to tidying this dataset!
+**Results:** We discover that `education_level` and `work_hours` are the only predictors of the five with a definitive correlation with `price`. The other predictors will require a slightly more statistical analysis, which does not fall under the focus of our project, if we want to know whether they are responsible for the higher median income for Asians.
 
 Data Tidying
 ------------
 
-After importing the dataset, I noticed that the dataset did not import a row for category names so I decided to re-import it with its default titles presented with the dataset extraction. I then filtered out the following variables that I felt were redundant or negligible in predicting salary.
+After importing the dataset, I noticed that the dataset did not import the varialbe names so I decided to re-import it with its default titles presented in the Adult dataset. I then filtered out the following variables that I felt were redundant or negligible when predicting salary.
 
--   `relationship` is a redundant variable given the information that `marital_status` already provides.
+-   `relationship` is a redundant variable given the similar information that `marital_status` already provides.
 -   `capital_gain` and `capital_loss` are both variables that are negligible when in comparison to a person's overall salary.
--   `education_years`'s numerical values do not actually correlate to the number of years of education someone received. The variable is a numerical indicator for the `education_level` heirarchy that orders the education levels.
+-   `education_years` numerical values do not actually correlate to the number of years of education someone received. The variable is a numerical indicator for the `education_level` heirarchy that orders the education levels.
 
-I then checked for missing values and was surprised to see that there were none in the dataset. However, I did notice that there were a few categorical variables with "?" as a value and decided to take a closer look. The categorical values that have "?" as a value are `working_class`, `occupation`, and `native country`. I calculated the percentage of "?" observations in each category and decided to keep all three variables since the number of "?" did not exceed 5%. I treated "?" as a missing value by replacing them with `NA` until I evaluated them later on a case by case basis.
+I then checked for missing values and was surprised to see that there were none in the dataset. However, I did notice that there were a few categorical variables with "?" as a value and decided to take a closer look. The categorical values that have "?" as a value are `working_class`, `occupation`, and `native country`. I calculated the percentage of "?" observations in each category and decided to keep all three variables since the number of "?" did not exceed 5%. I treated "?" as a missing value by replacing them with `NA` and plan to evaluate them later on in a case by case basis.
 
-While looking at the `education_level` variable, I noticed that I could group all of the non-highschool graduates together into one variable and group the two associate degrees together in order to make the data more tidy. I also renamed some of the other variables to be more person friendly.
+While looking at the `education_level` variable, I noticed that I could group all of the non-highschool graduates together into one variable and group the two associate degrees together since I don't think it will be important to see the difference between the individual grades or associate degrees. I also renamed some of the other variables to be more person friendly.
 
 ``` r
 #Importing dataset with proper category names
@@ -61,8 +61,8 @@ tmp <-  c("Preschool|1st-4th|5th-6th|7th-8th|9th|10th|11th|12th" = "Non-HS-grad"
 adult$education_level <- str_replace_all(adult$education_level, tmp)
 ```
 
-Questions and Findings: Asian Economic Status in the US
-=======================================================
+Asian Economic Status in the US
+===============================
 
 I first determined that Asians make up approximately 3.2% of this dataset, which is reasonably representative of the percentage of Asians in the entire US population. Since I will be comparing the median salary between Asians and the rest of the US for the remaining of this section, I will adjust the race variable to just be either Asian or non-Asian to make analysis easier.
 
@@ -90,9 +90,9 @@ Myth or not?
 
 **Do Asians have a higher salary compared to the rest of the country?**
 
-A preliminary point to note is that the salary variable is categorical and divided between greater than 50K or less than 50K annual salary. A quick examination shows that the Asian population does indeed have a higher salary comparatively to the rest of the US. Our goal is to determine which factors account for this 2.5% increase in salary within the Asian population.
+A preliminary point to note is that `salary` is categorical and divided between greater than 50K or less than 50K annual salary. A quick examination shows that the Asian population does indeed have a higher salary comparatively to the rest of the US. Our goal is to determine which factors account for this 2.5% increase in salary within the Asian population.
 
-**Assumption**: The proportion of people who make over 50K in any distinct variable is reflected in a similar fashion within both Asian and non-Asian populations. (\*For example: If 50% of Professors make more than 50K in the US as a whole, 50% of Asian professors and 50% of non-Asian professors also make more than 50K.)
+**Assumption**: The proportion of people who make over 50K in any distinct variable is reflected in a similar fashion within both Asian and non-Asian populations. *(For example: If 50% of Professors make more than 50K in the US as a whole, 50% of Asian professors and 50% of non-Asian professors also make more than 50K.)*
 
 ``` r
 # Calculation of salary in Asian population comparatively to rest of US
@@ -156,7 +156,7 @@ adult %>%
 
 ![](report_code_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
-If we determine the cut-off between higher and lower levels of education to be the point between an Associate's and a Bachelor's degree, Fig. 2 displays this division clearly. To the left of this cut-off, non-Asians occupy the lower levels of education at higher proportions comparatively to Asians. While to the right of this cut-off, the proportion of Asians that receive a Bachelor's, Master's, Professional, or PHD degree is at least 1.5 to 2 times greater than that of non-Asians. From this data, we can infer that education seems like a priority for Asian households for us to see such a proportion of their population earning a Bachelor's degree or higher. Thus, education level seems like a big factor that is responsible for the higher salary among Asians in the US.
+If we designate the cut-off between higher and lower levels of education to be the point between an Associate's and a Bachelor's degree, Fig. 2 displays this division clearly. To the left of this cut-off, non-Asians occupy the lower levels of education at higher proportions comparatively to Asians. While to the right of this cut-off, the proportion of Asians that receive a Bachelor's, Master's, Professional, or PHD degree is at least 1.5 to 2 times greater than that of non-Asians. From this data, we can infer that education seems like a priority for Asian households for us to see such a proportion of their population earning a Bachelor's degree or higher. Thus, education level seems like a big factor that is responsible for the higher salary among Asians in the US.
 
 Working Class
 -------------
@@ -185,7 +185,7 @@ adult %>%
 
 Among the working classes, the private sector earns the least salary and the incorporated self employment has the highest salary. The blue and purple bars indicate the proportion of Asians and non-Asians respectively in each working class. At first glance, Asians seem to beat out non-Asians in the top two highest earning working classes - federal government and incorporated self employment.
 
-Keep in mind that the blue bars in each working class aggregate to the total Asian population, and the same property applies to the purple bars that make up the entire non-Asian population. Looking at the private sector, an overwhelming 75% of both Asians and non-Asians occupy this least salary working class. Even though we initially noticed that Asians occupy more of the highest two salary working classes, it is imperative to notice that less than 10% of the total Asian population occupy these two working classes. In other words, even though Asians do occupy the higher salary working classes comparatively to the rest of the US, the vast majority of both Asians and non-Asians being in the private sector makes this difference much less influential. In summary, working class only plays a small factor in the salary for Asians being higher.
+Keep in mind that the blue bars in each working class aggregate to the total Asian population, and the same property applies to the purple bars that make up the entire non-Asian population. Looking at the private sector, an overwhelming 75% of both Asians and non-Asians occupy this least salary working class. Even though we initially noticed that Asians occupy more of the highest two salary working classes, it is imperative to notice that less than 10% of the total Asian population occupy these two working classes. In other words, even though Asians do occupy the higher salary working classes comparatively to the rest of the US, the vast majority of both Asians and non-Asians being in the private sector makes this difference much less influential. In summary, we don't know for sure if working class plays a factor in the salary for Asians being higher.
 
 Occupation
 ----------
@@ -236,7 +236,7 @@ We are happy to see that the majority of both our populations are not stuck in o
 -   Professors (2, 45%): There are 5% more Asians than non-Asians as professors.
 -   Craft Repair (6, 25%): There are 5% more non-Asians than Asians in Craft repairs.
 
-Since for every craft repairer making over 50K, there are two professors making over 50K, there are more Asians in higher paying occupations. However, this overall difference is once again quite small so we conclude that occupation only plays a small role in Asians having a higher salary.
+Since for every craft repairer making over 50K, there are two professors making over 50K, there are more Asians in higher paying occupations. However, this overall difference is once again quite small so we can't conclude whether occupation plays a role in Asians having a higher salary.
 
 Marital Status
 --------------
@@ -375,6 +375,6 @@ adult %>%
 Conclusion
 ==========
 
-After looking at the five variables (`education_level`, `working_class`, `occupation`, `marital_status`, and `hours_per_week`), we conclude that `education_level` seems to have the heaviest influence in the higher median salary in the Asian population. `occupation`, `marital_status`, `hours_per_week`, and `working_class` all have minor contributions that are not nearly as obvious as the pattern seen in `education_level`. There are certain trends that we could have explored further such as the correlation beteen `education_level` and `occupation`. We initially saw that Asians tend to get higher levels of education including a doctorate degree, and this was seen once again in our occupation analysis where there was proportionally a much larger number of Asians that were professors.
+After looking at the five variables (`education_level`, `working_class`, `occupation`, `marital_status`, and `hours_per_week`), we conclude that `education_level` and `hours_per_week` seem to have the heaviest influence in the higher median salary in the Asian population. We cannot determine whether `occupation`, `marital_status`, and `working_class` have a correlation with `price` without a more statistically rigorous approach. *(For example: In `hours_per_week`, we were slightly more rigorous in mathematically calculating the exact proportion of Asians that occupied the 40 to 60 hours per week range.)* We first inspected whether a predictor correlates to higher salary for certain values of that variable. Assuming that our discovered proportions from the entire US population is exactly reflected in the Asian and non-Asian demographics, we then investigated whether Asians occupied the values of the variable that correlate to higher salaries.
 
-It must be noted that our analysis is not very rigorous and serves as a exploratory data analysis that is best at catching out obvious trends like the one we saw in `education_level`. We first inspected whether a variable correlates to higher salary for certain values of that variable. Assuming that our discovered proportions from the entire US population is exactly reflected in the Asian and non-Asian demographics, we then investigated whether Asians occupied the values of the variable that correlated to higher salaries. This method of analysis yields less fruit for variables where the population proportion trends were not as obvious. In `hours_per_week`, we were slightly more rigorous in mathematically calculating the exact proportion of Asians that occupied the 40 to 60 hours per week range. If the salary variable was numerical, exploring this dataset may have been more exciting for my particular interest in the median Asian income in the US.
+If we were to move onto some modelling, one thing to note is that we would have to pay attention to multicollinearity. We initially saw that Asians tend to get higher levels of education including a doctorate degree, and this was seen once again in our occupation analysis where there was proportionally a much larger number of Asians that were professors. This correlation between `education_level` and `occupation` could be explored in further exploratory data analysis. Overall, I had a lot of fun improving my data cleaning skills and EDA by becoming more familiar with the `tidyverse` package!
