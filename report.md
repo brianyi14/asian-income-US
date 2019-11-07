@@ -5,7 +5,7 @@ Brian Yi
 Introduction
 ============
 
-**Purpose:** My goal is to practice and develop my data cleaning, transforming, and exploratory data analysis skills in R. We want to identify overall trends and patterns within our dataset to see what is responsible for the higher median income for Asian Americans in the US. Under the assumption that the factors responsible for the higher income isn't related to race, this knowledge can be useful for anyone who wants to improve their chances of earning a higher income. From an industry point of view, if a company measures an individual's potential according to their predicted income, they can even use the patterns we discover as metrics to hiring the right employes!
+**Purpose:** My goal is to practice and develop my data cleaning, transforming, and exploratory data analysis skills in R. We want to identify overall trends and patterns within our dataset to see what is responsible for the higher median income for Asian Americans in the US. Under the assumption that the factors responsible for the higher income isn't related to race, this knowledge can be useful for anyone who wants to improve their chances of earning a higher income. From an industry point of view, if a company measures an individual's potential according to their predicted income, they can even use the patterns we discover as metrics to hiring the right employees!
 
 Due to my own Asian ethnic background, I am interested in the factors most responsible for Asian Americans supposedly having a higher median income in the US. I choose the Adult dataset that was extracted from the 1994 US Census Bureau database. This dataset contains various social, economic, educational, and ethnic variables that can be used to predict someone's salary.
 
